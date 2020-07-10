@@ -1,0 +1,12 @@
+@charset "UTF-8";
+/* 주석입니다 */
+		h1{color:yellow;
+			background:green;
+			text-align:center;}
+		h2{color:white;
+			background:purple;
+			text-align:center;}				
+		body{background:#CEFBC9;
+			color:white;
+			text-align:center}
+		h3{background:pink}		

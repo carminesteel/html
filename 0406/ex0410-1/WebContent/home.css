@@ -1,0 +1,17 @@
+@charset "UTF-8";
+		*{font-family:'나눔바른고딕';}
+		body {background:#FFEBFF;}
+		#page{background:white; width:1000px; margin:auto; padding:30px; box-shadow : 5px 5px 3px rgba(154,86,126,0.7); border-radius:10px 10px 10px 10px;}
+		#content{width:900px; border:2px solid white; margin:auto; padding:20px;} 
+		.tbl{width:700px; margin:auto;border-collapse:collapse;margin-top:20px;}
+		.tbl td{border:1px solid rgb(231,171,205); padding:5px;}
+		.tbl .title{background:rgb(237,205,223); color:black; text-align:center;}
+		.tblInsert{background:rgb(250,241,248);width:700px;margin:auto;padding:20px;}
+		.data:nth-child(2n+1){background:#FFEBFF;}
+		.data:hover{background:rgb(128,47,94); color:white;}
+		#menu{width:700px; margin:auto; text-align:right;}
+		a{text-decoration:none; color:black; font-size:17px;;}
+		a:hover{color:rgb(128,47,94)}
+		.button{text-align:center;}
+		
+		

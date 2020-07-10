@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<style>
+	#tbl{width:700px;border-collapse:collapse;}
+	td{border:1px solid green;}
+	tr:hover{color:black;background:yellow}
+	.title{;width:400px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+	.authors{width:200px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+	.price{width:100px;}
+	</style>
+</head>
+<body>
+	<h1>[도서검색]</h1>
+	<div id="search">
+		검색수:<span id="total"></span>
+		<input type ="text" value="" id="txtSearch">
+		<input type ="button" value="검색" id="btnSearch">
+	</div>
+	<table id="tbl"></table>
+	<div id="pagination">
+		<button id="btnPre">이전</button>
+		<span id="pageNo"></span>
+		<button id="btnNext">다음</button>
+	</div>
+</body>
+<script>
+	getList();
+	$("#btnSearch").on("click",function(){
+		getList();
+	});
+	
+	$("#txtSearch").keydown(function(key){
+		if(key.keyCode==13){
+			getList();	
+		}
+	});
+	
+	var is_end;
+	var page=1;
+	
+	$("#btnNext").on("click", function(){
+	      if(is_end==false){
+	         page=page+1;
+	         getList();
+		 }
+	});
+		   	
+	$("#btnPre").on("click", function(){
+	      if(page!=1){
+	         page=page-1;
+	         getList();
+	      }
+   	});
+	
+	function getList(){
+	
+		var query=$("#txtSearch").val();
+		$.ajax({
+			type:"get",
+			url:"https://dapi.kakao.com/v3/search/book?target=title",
+			headers:{"Authorization":"KakaoAK 550c2430589d8623c802155ee1472416"},	
+			dataType:"json",
+			data:{"query":query, "page":page, "size":10},
+			success:function(res){
+				
+				var total=res.meta.pageable_count;
+				is_end = res.meta.is_end;
+				$("#total").html("<b>"+total+"</b>건");
+				
+				var str="";
+				$(res.documents).each(function(){
+					var title = this.title;
+					var authors = this.authors;
+					var price = this.price;
+					var url = this.url;
+					
+					str +="<tr class=row>";
+					str +="<td class='title'>"+title+"</td>";
+					str +="<td class='price'>"+price+"</td>";
+					str +="<td class='authors'>"+authors+"</td>";
+					str +="</tr>";
+				
+				});
+				$("#tbl").html(str);
+			}
+		});
+		$("#pageNo").html("page"+page);
+	}
+</script>
+</html>

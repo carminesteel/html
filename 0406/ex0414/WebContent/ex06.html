@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>	
+	<meta charset="UTF-8">
+	<title>주소관리</title>
+</head>
+<body>
+	<h1>주소관리</h1>
+	이름: <input type="text" id="txtName">
+	<hr>
+	주소: <input type="text" id="txtAddress">
+	<hr>
+	<input type="reset" value="취소" id="btnCancel">
+	<input type="button" value="저장" id="btnSave">
+	<br><br>
+	
+	<input type="button" value="선택삭제" id="btnDel">
+	<table id="tbl" border=1 width=500>
+		<tr>
+			<td><input type = "checkbox" id="chkAll"></td>
+			<td width=100>이름</td>
+			<td width=300>주소</td>
+			<td width=50> </td> 
+		</tr>
+	</table>
+</body>
+<script>
+	//전체선택 해제 버튼을 클릭했을 때 
+	$("#chkAll").click(function(){
+		if($(this).is(":checked")){
+			$("#tbl .row input:checkbox").each(function(){
+				$(this).prop("checked", true);
+			});
+		}else{
+			$("#tbl .row input:checkbox").each(function(){
+				$(this).prop("checked", false);
+			
+			});
+		}	
+	});
+	//선택삭제 버튼 클릭
+	$("#btnDel").click(function(){
+		if(confirm("선택한 행을 삭제하시겠습니까?")==false) return;
+		$("#tbl .row input:checkbox:checked").each(function(){
+			var row = $(this).parent().parent();
+			$(row).remove()
+		});
+	});
+	
+	//행에 삭제 버튼 클릭했을 때
+	$("#tbl").on("click",".row button",function(){
+		if(confirm("삭제하시겠습니까?")==false) return;
+		var row=$(this).parent().parent(); //this의 부모의 부모는 tr이기 때문에 행을 지운다.
+		$(row).remove();
+	});
+	//저장버튼 클릭했을때
+	$("#btnSave").click(function(){
+		if(!confirm("저장하시겠습니까?"))return; //저장 안할거면 리턴으로 빠져나감
+		var name=$("#txtName").val();
+		var address=$("#txtAddress").val();
+		var str="<tr class='row'>";
+		str += "<td><input type = 'checkbox'></td>";
+		str += "<td>"+ name +"</td>";
+		str += "<td>"+ address +"</td>";
+		str += "<td><button>삭제</button></td>";
+		str += "</tr>";
+		$("#tbl").append(str);
+	});
+	
+</script>
+</html>

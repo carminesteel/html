@@ -1,0 +1,7 @@
+@charset "UTF-8";
+body{text-align:center;}
+		.title{text-align:center;}
+		.row:hover{background:gray;color:white;cursor:pointer;}
+		#tbl{margin:auto;}
+		#ctbl{margin:auto;}
+		#lcode, #lname{margin:auto;text-align:center;}

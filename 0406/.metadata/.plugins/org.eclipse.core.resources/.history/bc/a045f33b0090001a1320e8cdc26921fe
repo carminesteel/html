@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>교수입력</title>
+</head>
+<body>
+	<h1>교수입력</h1>
+	<div>
+		교수번호 : <input type = "text" id= "txtpcode">
+		교수명 : <input type = "text" id= "txtpname">
+		<input type = "button" id = "btnSave" value="저장">
+	</div>
+</body>
+<script>
+	$("#btnSave").on("click", function(){
+		if(!confirm("저장하시겠습니까?")) return;
+		
+	});
+</script>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>자바스크립트 함수</title>
+	<script>
+		function sum(){
+			var tot = 0;
+			for(i=0; i<=100; i++){
+				tot=tot+i;
+			}
+			alert("1~100 까지의 합 = "+tot)
+		}
+		
+		sum();
+		
+		function funColor(color, back){
+			h = document.getElementById("header");
+			alert("색바꾼다")
+			h.style.color=color;
+			h.style.background=back;
+		}
+		
+		function funBack(back){
+			var name = document.getElementsByClassName("name");
+			alert("색바꾼다")
+			for(i=0; i<name.length; i++){
+				var n = name[i];
+				n.style.background = back;
+			}		
+		}
+		
+		
+	</script>
+</head>
+<body> <!-- 이벤트는 키보드를 누르거나 마우스를 클릭하는 것과 같이 어떠한 현상이 프로그램에게 영향을 미치는 것을 말한다.  -->
+	<button onClick="sum();">1~100까지의 합계</button> <!-- onClick 이벤트는 클릭하면 지정된 값이 실행되도록 하는 이벤트이다. -->
+	<input type = "button" value = "1~100까지의 합계">
+	<button onClick="location.href='http://www.naver.com'">네이버</button>
+	<hr>
+	<h1 id = "header">안녕하세요</h1>
+	<button onClick="funColor('red','black')">빨강</button>
+	<button onClick="funColor('white','black')">흰색</button>
+	<button onClick="funColor('blue','gray')">파랑</button>	<!-- 미리 지정해준 function으로 버튼을 누를 때마다 header의 색이 바뀌도록 하였다. -->
+
+	<h1 class="name">홍길동</h1>
+	<h1 class="name">심청이</h1>
+	<h1 class="name">강감찬</h1>
+	<button onClick="funBack('red')">빨강</button>
+	<button onClick="funBack('blue')">파랑</button>
+	<button onClick="funBack('yellow')">노랑</button>
+	
+</body>
+</html>

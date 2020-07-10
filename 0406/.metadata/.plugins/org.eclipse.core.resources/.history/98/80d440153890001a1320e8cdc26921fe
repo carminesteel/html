@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>학과검색</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+ 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+</head>
+<body>
+	<h1>[학과검색]</h1>
+	<select id = "dept">
+		<option>전산</option>
+		<option>건축</option>
+		<option>전자</option>
+	</select>
+	<input type = "button" value = "검색" id = "btnSearch">
+	<div>
+		<h1>[학생목록]</h1>
+		
+		<table id="tblcnt" width=500></table>
+		<script id= "tempcnt" type = "text/x-handlebars-template">
+		
+		<tr class = row>
+			<td>총{{scnt}}명</td>
+		</tr>
+		
+		</script>
+		
+		<table id="tbl" border=1 width=500></table>
+		<script id= "temp" type = "text/x-handlebars-template">
+		{{#each sArray}}
+		<tr class = srow>
+			<td class = scode>{{scode}}</td>
+			<td>{{sname}}</td>
+			<td>{{dept}}</td>
+			<td>{{birthday}}</td>
+		</tr>
+		{{/each}}
+		</script>
+		
+			<h1>[교수목록]</h1>
+			
+		<table id="tblcnt2" width=500></table>
+		<script id= "tempcnt2" type = "text/x-handlebars-template">
+		
+		<tr class = row>
+			<td>총{{pcnt}}명</td>
+		</tr>
+		
+		</script>
+		
+		<table id="tbl1" border=1 width=500></table>
+		<script id= "temp1" type = "text/x-handlebars-template">
+		{{#each pArray}}
+		<tr class = row>
+			<td class = pcode>{{pcode}}</td>
+			<td>{{pname}}</td>
+			<td>{{dept}}</td>
+			<td>{{hiredate}}</td>
+		</tr>
+		{{/each}}
+		</script>
+		
+		<span id = ecnt></span>
+		<span id = eavg></span>
+		<table id="tbl2" border=1 width=500></table>
+		<script id= "etemp" type = "text/x-handlebars-template">
+		{{#each array}}
+		<tr class = erow>
+			<td class = lcode>{{lcode}}</td>
+			<td>{{lname}}</td>
+			<td>{{grade}}</td>
+		</tr>
+		{{/each}}
+		</script>
+		
+		
+	</div>
+</body>
+<script>
+	$("#btnSearch").on("click", function(){
+		var dept = $("#dept").val();
+		alert("ddd");
+		$.ajax({
+			type:"get",
+			url:"list.jsp",
+			dataType:"json",
+			data:{"dept":dept},
+			success:function(data){
+				alert('TLVKF')
+				var temp=Handlebars.compile($("#temp").html());
+				$("#tbl").html(temp(data));
+				
+				temp=Handlebars.compile($("#tempcnt").html());
+				$("#tblcnt").html(temp(data));
+				
+				temp=Handlebars.compile($("#temp1").html());
+				$("#tbl1").html(temp(data));
+				
+				temp=Handlebars.compile($("#tempcnt2").html());
+				$("#tblcnt2").html(temp(data));
+				
+			}
+		});				
+	});
+	
+	$("#tbl").on("click",".srow", function(){
+		alert("눌럿네")
+		var scode = $(this).find(".scode").html();
+		$.ajax({
+			type:"get",
+			url:"slist.jsp",
+			dataType:"json",
+			data:{"scode":scode},
+			success:function(data){
+				var temp=Handlebars.compile($("#etemp").html());
+				$("#tbl2").html(temp(data));
+				$("#ecnt").html("수강수 : "+ data.cnt);
+				$("#eavg").html("평균 : " data.avg);
+			}
+		});				
+	});
+</script>
+</html>

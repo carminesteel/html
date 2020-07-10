@@ -1,0 +1,39 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import = ' ex0504.*, java.util.*' %>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+ 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+</head>
+<body>
+	<h1>학생목록</h1>
+	<table border = 1 width = 700 id='tbl'>
+		<tr class = title>
+			<td>학번</td>
+			<td>학과</td>
+			<td>성명</td>
+			<td>생년월일</td>
+			<td>지도교수</td>
+			<td>수강신청</td>
+		</tr>
+		<%
+			EnrollDAO dao = new EnrollDAO();
+			ArrayList<EnrollVO> list = dao.clist("%%");
+			for(SVO vo:list){
+				out.println("<tr class = row>");
+				out.println("<td class = scode>" + vo.getScode() + "</td>");
+				out.println("<td class = sname>" + vo.getSname() + "</td>");
+				out.println("<td>" + vo.getDept() + "</td>");
+				out.println("<td>" + vo.getBirthday() + "</td>");
+				out.println("<td>" + vo.getAdvisor() + "</td>");
+				out.println("<td><button>수강신청</button></td>");
+				out.println("</tr>");
+			}
+		%>
+	</table>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>블로그 검색</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<style>
+		#tbl {width:800px;border:1px solid black}
+		td {border:1px solid black}
+	</style>
+</head>
+<body>
+	<h1>[검색]</h1>
+	<div id = "search">
+		검색수:<span id="total"></span><br>
+		<input type = "text" id = "txtSearch" value = "설현">
+		<input type = "button" id = "btnSearch" value="검색">
+	</div>
+	<table id= "tbl"></table>
+	<script id="temp" type="text/x-handlebars-template">
+		{{#each items}}
+			<tr>
+				<td><a href = "{{{link}}}">{{{title}}}<a></td>
+				<td>{{{description}}}</td>
+			</tr>
+
+			<div class=box>
+				<img src = "{{thumbnail_url}}" url="{{image_url}}">
+			</div>
+		{{/each}}
+	</script>
+	<div id = "pagination">
+		<button id = "btnPre">이전</button>
+		<span id="pageNo"></span>
+		<button id = "btnNext">다음</button>		
+	</div>
+</body>
+<script>
+	var page = 1;
+	var display=5;
+	var start=1;
+	var total;
+	getList();
+	
+	$("#btnNext").on("click", function(){      		
+		if(start+display < total){
+			start=start+display;
+			page = page+1;
+	        getList();
+        }
+	});
+	
+	$("#btnPre").on("click", function(){
+		 if(start > 1){
+			start=start-display;
+			page = page-1;
+	        getList();
+        }	 
+	});
+	
+	$("#btnSearch").on("click", function(){
+		start=1;
+		page = 1;
+		getList();
+	});
+	
+	$("#txtSearch").keydown(function(key){
+		if(key.keyCode==13){
+			start=1;
+			page = 1;
+			getList();
+		
+		}
+	});
+	
+	
+
+	function getList(){
+
+		var query=$("#txtSearch").val();
+		$.ajax({
+			type:"get",
+			url:"blog.jsp",
+			dataType:"json",
+			data:{"query":query, "display":display, "start":start},
+			success:function(data){
+				
+				total=data.total;
+				$("#total").html(total + "건");
+				
+				
+				var temp = Handlebars.compile($("#temp").html());
+				$("#tbl").html(temp(data));
+			}
+		});
+		$("#pageNo").html(page);
+	}
+</script>
+</html>

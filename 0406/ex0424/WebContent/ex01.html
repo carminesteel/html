@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>전문자료 검색</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<style>
+		td{border:1px solid black;}
+		table{margin:auto;width:600px;text-align:left;border:1px solid black;}
+		#page{text-align:center; margin:auto;}
+		#page2{text-align:center; margin:auto;}
+		.description{height:60px;margin-bottom:20px;margin-top:10px;}
+		#pagination{margin-top:20px;}
+		.txtBox{width:400px;text-align:left;}
+	</style>
+</head>
+<body>
+	<span id = page>
+		<h2>김홍철 검색</h2>
+		<hr>
+		
+		<div id = "search">		
+			<input type = "text" value = "검색하세요" id = "txtSearch">
+			<input type = "button" value = "Enter!" id = "btnSearch">
+			<br>
+			<input type="button" id="btnSave" value="선택 스크랩">
+			<input type="button" id="btnChkall" value="전체선택">
+			<span id="total"></span>		
+		</div>
+		
+		<table id = "tbl"></table>
+		
+		<script id = "temp" type="text/x-handlebars-template">
+	
+			{{#each items}}
+	
+			<tr class = "row">		
+				<td>
+					<div class = title><a href = "{{{link}}}">
+						{{{title}}}</a>&nbsp;<input type = "checkbox" class = chk>
+					</div>
+				</td>
+			</tr>
+		
+			<tr class = "row2">	
+				<td><div class = description>{{{description}}}</div></td>
+			</tr>
+
+			{{/each}}
+	
+		</script>
+		<div id = "pagination">
+			<button id = "btnPre">이전</button>
+			<span id="pageNo"></span>
+			<button id = "btnNext">다음</button>		
+		</div>
+	</span>	
+		
+	<span id = "page2">
+	
+			<hr>
+			<h1>스크랩한 자료</h1>
+			
+			<div>
+				자료 개수 : <span id = "count"></span><br>
+				<input type="button" id="btnDelete" value="선택삭제">
+			</div>
+			
+			<table id = "tbl1"></table>
+			
+			<script id = "temp1" type="text/x-handlebars-template">
+				
+				{{#each items}}
+				
+				<tr class=row1 seq={{seq}}>
+					<td>
+						<div class = title>
+							<input type = "text" class = "txtBox" value="{{{title}}}"><input type = "checkbox" class = chk1>
+						</div>
+					</td>
+				</tr>
+		
+				<tr>	
+					<td><div class = description>{{{description}}}</div></td>
+				</tr>
+	
+				{{/each}}
+
+		</script>
+	
+	</span>
+</body>
+<script>
+	var display = 5;
+	var start = 1;
+	var page = 1;
+	
+	total;
+	getList();
+	getdata();
+	
+	$("#tbl").on("click",".row img",function(){
+		
+		var box=$(this).parent().parent();
+		
+		$("#darken-background").show();	
+	});
+	
+	
+	//선택삭제 버튼을 클릭했을때
+	$("#btnDelete").on("click",function(){		
+		if(confirm("선택행을 삭제하시겠습니까?")==false) return;
+		$("#tbl1 .chk1:checked").each(function(){
+			var row = $(this).parent().parent().parent();
+			var seq = row.attr("seq");	
+			alert(seq);
+			$(this).prop("checked",false);
+			
+			alert(seq);
+			
+			$.ajax({
+				type:"get",
+				url:"delete.jsp",
+				data:{"seq":seq},
+				success:function(){}	
+			})
+		})
+	getdata();
+	alert("완료");
+	})
+	
+	$("#tbl1").on("click",".row1 .update",function(){
+		alert("ddd");
+		if(confirm("선택행을 수정하시겠습니까?")==false) return;
+			var row = $(this).parent().parent();
+			var id = row.attr("sid");
+			var lprice = row.find(".lprice1").val();
+			var hprice = row.find(".hprice1").val();
+			alert(id + "\n" + lprice + "\n" + hprice);		
+			$.ajax({
+				type:"get",
+				url:"update.jsp",
+				data:{"sid":id, "lprice":lprice, "hprice":hprice,},
+				success:function(){}		
+			})
+			alert("수정되었습니다.")
+			getdata();
+	})
+	
+	
+	
+		$("#btnSave").on("click",function(){
+		if(confirm("선택행을 저장하시겠습니까?")==false) return;
+		$("#tbl .chk:checked").each(function(){
+			var row=$(this).parent().parent();
+			var row2=$(".row2");
+			var link = $('a').attr('href');
+			var title = row.find(".title").text();
+			var description = row2.find(".description").text();
+			
+			alert(title + description + "을(를) 스크랩 하시겠습니까?");
+			$(this).prop("checked",false);
+		
+			$.ajax({
+				type:"get",
+				url:"insert.jsp",
+				data:{"link":link,"title":title,"description":description},
+				success:function(){}		
+			})
+		})
+	alert("저장되었습니다")
+	getdata();
+	})
+	
+	$("#btnClose").on("click",function(){
+		$("#darken-background").hide();
+	});
+	
+	$("#btnNext").on("click", function(){      		
+		if(start+display < total){
+			start=start+display;
+			page = page+1;
+	        getList();
+        }
+	});
+	
+	$("#btnPre").on("click", function(){
+		 if(start > 1){
+			start=start-display;
+			page = page-1;
+	        getList();
+        }	 
+	});
+	
+	$("#btnSearch").on("click", function(){
+		start=1;
+		page = 1;
+		getList();
+	});
+	
+	$("#txtSearch").keydown(function(key){
+		if(key.keyCode==13){
+			start=1;
+			page = 1;
+			getList();
+		
+		}
+	});
+	
+	//전체선택 체크박스를 클릭했을때
+	$("#tbl").on("click","#chkAll",function(){
+	   if($(this).is(":checked")){
+	      $("#tbl .chk").each(function(){
+	         $(this).prop("checked", true);
+	      });
+	   }
+	   else{
+	      $("#tbl .chk").each(function(){
+	         $(this).prop("checked", false);
+	      });
+	   }
+	});
+	
+	//전체선택 체크박스를 클릭했을때
+	$("#tbl1").on("click","#chkAll1",function(){
+	   if($(this).is(":checked")){
+	      $("#tbl1 .chk1").each(function(){
+	         $(this).prop("checked", true);
+	      });
+	   }
+	   else{
+	      $("#tbl1 .chk1").each(function(){
+	         $(this).prop("checked", false);
+	      });
+	   }
+	});
+
+	
+	function getdata(){
+		$.ajax({
+			type:"get",
+			url:"list.jsp",
+			dataType:"json",
+			success:function(data){
+				$("#count").html(data.total);
+				
+				var temp = Handlebars.compile($("#temp1").html());
+				$("#tbl1").html(temp(data));
+			}
+		
+		})
+		
+	}
+	
+	function getList(){
+		
+		var query=$("#txtSearch").val();
+		$.ajax({
+			type:"get",
+			url:"data.jsp",
+			dataType:"json",
+			data:{"query":query, "display":display, "start":start},
+			success:function(data){
+				
+				total=data.total;
+				$("#total").html("총" + total + "건의 자료 발견");
+				
+				
+				var temp = Handlebars.compile($("#temp").html());
+				$("#tbl").html(temp(data));				
+			}
+		});
+		$("#pageNo").html(page);
+	}
+</script>
+</html>

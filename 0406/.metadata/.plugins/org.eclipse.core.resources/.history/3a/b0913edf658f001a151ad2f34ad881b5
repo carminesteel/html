@@ -1,0 +1,29 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import = "ex0506.*, java.util.*, org.json.simple.*, java.text.*"%>
+<%
+	
+	String scode = request.getParameter("scode");
+
+	CDAO dao = new CDAO();
+	ArrayList<CVO> list4 = dao.elist(scode);
+	CVO vo = dao.avg(scode);
+	
+	JSONObject jObject = new JSONObject();
+	
+	JSONArray array = new JSONArray();
+		for(CVO v:list4){
+				JSONObject obj = new JSONObject();
+				obj.put("lcode", v.getLcode());
+				obj.put("lname", v.getLname());
+				obj.put("grade", v.getGrade());
+				array.add(obj);
+			}
+			jObject.put("elist", array);
+			jObject.put("avg", vo.getAvg());
+			jObject.put("cnt", vo.getCnt);
+	
+
+out.println(jObject);
+
+%>

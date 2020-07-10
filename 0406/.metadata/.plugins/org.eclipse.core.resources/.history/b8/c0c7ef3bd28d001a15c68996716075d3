@@ -1,0 +1,23 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import = "ex0504.*, java.util.*, org.json.simple.*, java.text.*"%>
+
+<%
+DecimalFormat df2 = new DecimalFormat("###.00");
+GDAO dao2 = new GDAO();
+ArrayList<GVO> list2 = dao2.glist();
+
+JSONObject jObject2 = new JSONObject();
+JSONArray array2 = new JSONArray();
+for(GVO vo:list2){
+	JSONObject obj2 = new JSONObject();
+	obj2.put("dept", vo.getDept());
+	obj2.put("scode", vo.getScode());
+	obj2.put("sname", vo.getSname());
+	String avg = df.format(vo.getAvg());
+	obj2.put("avg", vo.getAvg());
+	array.add(obj2);
+}
+jObject2.put("glist", array);
+out.println(jObject2);
+%>

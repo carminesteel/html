@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script>
+	
+		//경고창을 띄운다.
+		alert("Hello Javascript!!!");
+		//Confirm 창 띄우기 --확인은 true 취소는 false값으로 입력된다.
+		if(confirm("저장하시겠습니까?")){
+			alert("저장")
+		}else{
+			alert("취소")
+		};
+		
+		var radius = 10; //변수에 타입을 정하지 않아도 되며 var 적지 않아도 된다.
+		var pi = 3.14;	//java와 같은 문법을 사용하지만 변수 구분이 없다.
+		var str='원의 넓이';
+		
+		var area = radius * radius * pi;
+		alert(str + area);
+		
+		var hour = 9;
+		switch(hour){
+			case 9 : 
+				alert('출근');
+				break;
+			
+			case 12 : 
+				alert('점심')
+				break;
+		
+			case 6 : 
+				alert('퇴근')
+				break;
+		
+			default :
+				alert('근무')
+		}
+		
+		if(hour==9){
+			alert("출근");						
+		}else if(hour == 12){
+			alert("점심")
+		}else if(hour == 6){
+			alert("퇴근")
+		}else{
+			alert("근무")
+		}
+		
+		//반복문
+		sum = 0;
+		for(i=0; i<=100; i++){
+			sum = sum+i;
+		};
+		
+		alert("1~100까지의 합계 = " + sum)
+		
+		var tot = 0;
+		var j = 0;
+		while(j<100){
+			tot = tot+j
+			j = j+1;		
+		};
+		
+		alert("1~100까지의 합계 = " + tot)
+		
+		//배열
+		var array=[1,4,5,8];
+		sum=0;
+		for(i=0; i<array.length; i++){
+			sum = sum+array[i];
+		}
+		
+		alert("배열의 합계" + sum);
+		
+	</script>
+
+</head>
+<body>
+
+</body>
+</html>

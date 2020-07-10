@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>학과검색</title>
+</head>
+<body>
+	<h1>[학과검색]</h1>
+	<select id = "dept">
+		<option>전산</option>
+		<option>건축</option>
+		<option>전자</option>
+	</select>
+	<input type = "button" value = "검색" id = "btnSearch">
+	<div>
+		<h1>[교수목록]</h1>
+		<table id="tbl" border=1 width=500></table>
+		<script id= "temp1" type = "text/x-handlebars-template">
+		{{#each sArray}}
+		<tr class = row>
+			<td class = scode>{{scode}}</td>
+			<td>{{sname}}</td>
+			<td>{{dept}}</td>
+			<td>{{birthday}}</td>
+		</tr>
+		</script>
+	</div>
+</body>
+<script>
+	$("#btnSearch").on("click", function(){
+		var dept = $("#dept").val();
+		alert("ddd");
+		$.ajax({
+			type:"get",
+			url:"list.jsp",
+			dataType:"json",
+			data:{"dept":dept},
+			success:function(data){
+				var temp=Handlebars.compile($("#temp").html());
+				$("#tbl").html(temp(data));
+				
+				temp=Handlebars.compile($("#temp1").html());
+				$("#tbl1").html(temp(data));
+				
+			}
+		});				
+	});
+</script>
+</html>

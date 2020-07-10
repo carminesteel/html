@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>[학생등록]</title>
+</head>
+<body>
+	<div>
+		<h1>[학생등록]</h1>
+		<form action="insert.jsp">
+			<table border=1 width=500>
+			<tr>
+				<td>학생번호:</td>
+				<td><input type="text" maxlength=2 name="sno" size=5></td>			
+			</tr>
+			
+			<tr>
+				<td>학생성명:</td>
+				<td><input type="text" name="sname" size=10></td>			
+			</tr>
+			
+			<tr>
+				<td>전화번호:</td>
+				<td><input type="text" name="tel" size=10></td>			
+			</tr>
+			
+			<tr>
+				<td>학생주소:</td>
+				<td><input type="text" name="address" size=50></td>			
+			</tr>
+			
+			<tr>
+				<td style=text-align:center colspan=2>
+					<input type="reset"	value="취소">
+					<input type="submit" value="저장">
+					<input type="button" value="목록" onClick="location.href='list.jsp'">
+			</tr>
+		</table>
+		</form>
+	</div>
+</body>
+</html>

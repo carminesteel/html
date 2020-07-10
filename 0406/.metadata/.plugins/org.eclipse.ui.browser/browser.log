@@ -1,0 +1,49 @@
+
+4월 22, 2020 13:16:16.32 NEW SESSION
+4월 22, 2020 13:16:16.32 [4716:4348:0422/131616.313:ERROR:CONSOLE(61)] "URIError: URI malformed URIError: URI malformed
+4월 22, 2020 13:16:16.32     at decodeURI (<anonymous>)
+4월 22, 2020 13:16:16.32     at Automapping._createBinding (devtools://devtools/bundled/persistence/Automapping.js:48:29)
+4월 22, 2020 13:16:16.32     at Automapping._computeNetworkStatus (devtools://devtools/bundled/persistence/Automapping.js:25:33)
+4월 22, 2020 13:16:16.32     at Automapping._onUISourceCodeAdded (devtools://devtools/bundled/persistence/Automapping.js:17:198)
+4월 22, 2020 13:16:16.32     at devtools://devtools/bundled/persistence/Automapping.js:1:784
+4월 22, 2020 13:16:16.32     at WorkspaceImpl.dispatchEventToListeners (devtools://devtools/bundled/common/Object.js:12:173)
+4월 22, 2020 13:16:16.32     at ContentProviderBasedProject.addUISourceCode (devtools://devtools/bundled/workspace/WorkspaceImpl.js:37:157)
+4월 22, 2020 13:16:16.32     at ContentProviderBasedProject.addUISourceCodeWithProvider (devtools://devtools/bundled/bindings/ContentProviderBasedProject.js:25:207)
+4월 22, 2020 13:16:16.32     at new Binding (devtools://devtools/bundled/bindings/ResourceMapping.js:44:327)
+4월 22, 2020 13:16:16.32     at ModelInfo._resourceAdded (devtools://devtools/bundled/bindings/ResourceMapping.js:35:67)", source: devtools://devtools/bundled/host/InspectorFrontendHost.js (61)
+4월 22, 2020 13:16:16.66 [4716:4348:0422/131616.662:ERROR:CONSOLE(61)] "TypeError: Cannot read property '_resources' of undefined TypeError: Cannot read property '_resources' of undefined
+4월 22, 2020 13:16:16.66     at ModelInfo._removeFrameResources (devtools://devtools/bundled/bindings/ResourceMapping.js:37:59)
+4월 22, 2020 13:16:16.66     at ModelInfo._frameDetached (devtools://devtools/bundled/bindings/ResourceMapping.js:39:53)
+4월 22, 2020 13:16:16.66     at ResourceTreeModel.dispatchEventToListeners (devtools://devtools/bundled/common/Object.js:12:173)
+4월 22, 2020 13:16:16.66     at ResourceTreeFrame._remove (devtools://devtools/bundled/sdk/ResourceTreeModel.js:99:85)
+4월 22, 2020 13:16:16.66     at ResourceTreeFrame._removeChildFrames (devtools://devtools/bundled/sdk/ResourceTreeModel.js:98:117)
+4월 22, 2020 13:16:16.66     at ResourceTreeFrame._remove (devtools://devtools/bundled/sdk/ResourceTreeModel.js:99:16)
+4월 22, 2020 13:16:16.66     at ResourceTreeFrame._removeChildFrames (devtools://devtools/bundled/sdk/ResourceTreeModel.js:98:117)
+4월 22, 2020 13:16:16.66     at ResourceTreeFrame._navigate (devtools://devtools/bundled/sdk/ResourceTreeModel.js:77:333)
+4월 22, 2020 13:16:16.66     at ResourceTreeModel._frameNavigated (devtools://devtools/bundled/sdk/ResourceTreeModel.js:25:69)
+4월 22, 2020 13:16:16.66     at PageDispatcher.frameNavigated (devtools://devtools/bundled/sdk/ResourceTreeModel.js:121:47)", source: devtools://devtools/bundled/host/InspectorFrontendHost.js (61)
+
+4월 23, 2020 08:37:51.75 NEW SESSION
+4월 23, 2020 08:37:51.75 [1488:4948:0423/083751.753:ERROR:browser_switcher_service.cc(238)] XXX Init()
+
+4월 23, 2020 16:00:08.75 NEW SESSION
+4월 23, 2020 16:00:08.75 [2100:2996:0423/160008.750:ERROR:browser_switcher_service.cc(238)] XXX Init()
+
+4월 27, 2020 15:36:31.78 NEW SESSION
+4월 27, 2020 15:36:31.78 [6912:3988:0427/153631.783:ERROR:browser_switcher_service.cc(238)] XXX Init()
+
+4월 28, 2020 09:51:21.50 NEW SESSION
+4월 28, 2020 09:51:21.50 [2660:3792:0428/095121.500:ERROR:browser_switcher_service.cc(238)] XXX Init()
+4월 28, 2020 09:59:48.03 [608:4752:0428/095948.039:ERROR:browser_switcher_service.cc(238)] XXX Init()
+
+4월 28, 2020 10:06:54.38 NEW SESSION
+4월 28, 2020 10:06:54.38 [5796:2172:0428/100654.380:ERROR:browser_switcher_service.cc(238)] XXX Init()
+4월 28, 2020 15:52:10.99 [4224:2284:0428/155210.997:ERROR:browser_switcher_service.cc(238)] XXX Init()
+4월 28, 2020 15:52:32.90 [4584:6148:0428/155232.900:ERROR:browser_switcher_service.cc(238)] XXX Init()
+4월 28, 2020 15:52:40.18 [6976:4924:0428/155240.182:ERROR:browser_switcher_service.cc(238)] XXX Init()
+
+4월 29, 2020 09:02:48.00 NEW SESSION
+4월 29, 2020 09:02:48.00 [4312:4292:0429/090248.000:ERROR:browser_switcher_service.cc(238)] XXX Init()
+4월 29, 2020 10:48:51.46 [2336:1852:0429/104851.464:ERROR:browser_switcher_service.cc(238)] XXX Init()
+4월 29, 2020 10:53:26.56 [4688:2884:0429/105326.561:ERROR:browser_switcher_service.cc(238)] XXX Init()
+4월 29, 2020 11:17:47.33 [4652:3596:0429/111747.329:ERROR:browser_switcher_service.cc(238)] XXX Init()

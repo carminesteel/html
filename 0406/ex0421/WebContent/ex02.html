@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>도서검색</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<style>
+		body{margin:auto; text-align:center;}
+		#container{width:680px;height:1000px; background:none;margin:auto;border:1px soild black;}
+		.box{width:150px;height:300px; margin:5px; padding:5px; background:yellow; float:left;}
+		.box:hover{box-shadow:10px 10px 10px black;}
+		.title, .authors{width:150px;font-size:15px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
+		img{cursor:pointer;}
+	</style>
+</head>
+<body>
+	<a href="http://192.168.0.182:8088/ex0421/ex01.html">주소검색</a>
+	<a href="http://192.168.0.182:8088/ex0421/ex03.html">이미지검색</a>
+	<h1>[도서검색]</h1>
+	
+	<div id="search">
+		검색수:<span id="total"></span>
+		<input type = "text" id = "txtSearch" value = "">
+		<input type = "button" id = "btnSearch" value = "검색">
+	</div>
+	
+	<div id = pagination>
+		<button id = "btnPre">이전</button>
+		<span id="pageNo"></span>
+		<button id = "btnNext">다음</button>		
+	</div>
+	
+	<div id=container></div>
+	
+	검색수:<span id="total"></span>
+
+	<script id = "temp" type="text/x-handlebars-template">
+		
+		{{#each documents}}
+			<div class=box>
+				<img src = {{thumbnail}} url = {{url}} width=150px>
+				<div class = title>{{title}}</div>
+				<div class = authors>{{authors}}</div>
+				<div class = price>{{price}}</div>
+			</div>
+		{{/each}}
+
+	</script>
+</body>
+
+<script>
+	var is_end;
+	var page=1;
+
+	
+	$("#container").on("click", ".box img", function(){
+		var url=$(this).attr("url");
+		window.open(url, "검색", "width=500px, height=600px");
+		//location.href=url;
+	});
+
+	$("#txtSearch").keydown(function(key){
+		if(key.keyCode==13){
+			getList();
+		}
+	});
+	
+	$("#btnSearch").on("click",function(){
+		
+		getList();
+	});
+	
+	$("#btnNext").on("click", function(){
+	    if(is_end==false){
+	       page=page+1;
+	       getList();	
+		 }
+		});
+			   	
+		$("#btnPre").on("click", function(){
+	    if(page!=1){
+	       page=page-1;
+	       getList();	
+	    }
+		});
+
+	getList();
+	function getList(){
+		var query=$("#txtSearch").val();
+		$.ajax({
+			type:"get",
+			url:"https://dapi.kakao.com/v3/search/book?target=title",
+			headers:{"Authorization":"KakaoAK 550c2430589d8623c802155ee1472416"},	
+			dataType:"json",
+			data:{"query":query, "page":page, "size":12},
+			success:function(data){
+				
+				var total=data.meta.pageable_count;
+				$("#total").html(total + "건");
+				
+				is_end=data.meta.is_end;
+				
+				var temp = Handlebars.compile($("#temp").html());
+				$("#container").html(temp(data));			
+			}	
+		});		
+		$("#pageNo").html(page);
+	}
+</script>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>이미지</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+</head>
+<body>
+
+	<table id="tbl">
+		<tr class="row">
+			<td>1</td> <!-- 변수를 넣어줌 -->
+			<td><button sname="홍길동" address="인천">출력</button></td>
+		</tr>
+		<tr class="row">
+			<td>2</td>
+			<td><button sname="심청이" address="서울">출력</button></td>
+		</tr>
+	</table>
+	
+	<div>
+		<h1 id = "sname"></h1>
+		<h1 id = "address"></h1>
+		<input type = "text" id = "print">
+	</div>
+
+</body>
+<script>
+
+	$("#tbl").on("click", ".row button", function(){
+		var row = $(this).parent().parent();
+		var name = $(this).attr("sname");
+		var address = $(this).attr("address");
+
+		$("#sname").html(name), $("#address").html(address);
+		$("#print").val(name+address);
+	});
+	
+</script>
+</html>

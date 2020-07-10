@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>영화검색</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<style>
+		body {text-align:center;margin:auto;}
+		#tbl {width:600px;height:500px;margin:auto;border:1px solid black;}
+		td {height:150px;border:1px solid black;}
+		.thumb{width:120px;height:160px;margin:auto;text-align:center;padding:2px;}
+		.header td{height:25px;}
+		.save {width:50px}	
+		span {float:left;}
+		#span2 {margin-left:250px;}
+	</style>
+</head>
+<body>
+	
+		<h1>[영화검색]</h1>
+		<div id = "search">
+			검색수:<span id="total"></span><br>
+			<input type = "text" id = "txtSearch" value = "케">
+			<input type = "button" id = "btnSearch" value="검색">
+		</div>
+		<input type="button" id="btnSave" value="선택저장">
+		<table id = "tbl"></table>
+		<script id="temp" type="text/x-handlebars-template">
+		<tr class = header>
+			<td><input type="checkbox" id = chkAll></td>
+			<td>제목</td>
+			<td>주연배우</td>
+			<td>썸네일</td>
+			<td>저장</td>
+		</tr>
+		{{#each items}}
+			<tr class = row>
+				<td><input type = "checkbox" class = chk></td>
+				<td><a href = "{{{link}}}"><div class = title>{{{title}}}</div><a></td>
+				<td><div class = actor>{{{actor}}}</div></td>
+				<td><div class = thumb><img src="{{{image}}}"></div></td>
+				<td><div class = save><button>저장</button></div></td>
+			</tr>
+
+			<div class=box>
+				<img src = "{{image}}" url="{{link}}">
+			</div>
+	
+		{{/each}}
+	</script>
+		<div id = "pagination">
+			<button id = "btnPre">이전</button>
+			<span id="pageNo"></span>
+			<button id = "btnNext">다음</button>		
+		</div>
+
+	
+	<hr>
+	<h1>[저장결과]</h1>
+	<table id = "tbl1"></table>
+	<script id="temp1" type="text/x-handlebars-template">
+		<tr class = header>
+			<td><input type="checkbox" id = chkAll1></td>
+			<td>제목</td>
+			<td>주연배우</td>
+			<td>썸네일</td>
+			<td>저장</td>
+		</tr>
+		{{#each .}}
+			<tr class = row1>
+				<td><input type = "checkbox" class = chk1></td>
+				<td><a href = "{{{link}}}"><div class = title>{{{title}}}</div><a></td>
+				<td><div class = actor>{{{actor}}}</div></td>
+				<td><div class = thumb><img src="{{{image}}}"></div></td>
+				<td><div class = del><button>삭제</button></div></td>
+			</tr>
+
+			<div class=box>
+				<img src = "{{image}}" url="{{link}}">
+			</div>
+	
+		{{/each}}
+	</script>	
+</body>
+<script>
+	var page = 1;
+		var display=5;
+		var start=1;
+		var total;
+	
+	getList();
+	getMovie();
+	
+	function getMovie(){
+		
+		$.ajax({
+			type:"get",
+			url:"list.jsp",
+			dataType:"json",
+			success:function(data){
+				var temp = Handlebars.compile($("#temp1").html());
+				$("#tbl1").html(temp(data));	
+			}
+		});
+	}
+	
+	$("#tbl").on("click", ".row .save button", function(){
+		if(confirm("save?")==false) return;
+		var row = $(this).parent().parent().parent();
+		var title = row.find(".title").text();
+		var actor = row.find(".actor").html();
+		alert(title + actor);
+		$.ajax({
+			type:"post",
+			url:"insert.jsp",
+			data:{"title":title, "actor":actor},
+			success:function(){
+				alert("저장되었습니다");
+				getMovie();
+			},
+			error:function(){
+				alert("저장되지 않았습니다.")
+			}
+		});		
+	});
+	
+	//전체선택 체크박스를 클릭했을때
+	$("#tbl").on("click","#chkAll",function(){
+	   if($(this).is(":checked")){
+	      $("#tbl .row .chk").each(function(){
+	         $(this).prop("checked", true);
+	      });
+	   }
+	   else{
+	      $("#tbl .row .chk").each(function(){
+	         $(this).prop("checked", false);
+	      });
+	   }
+	});
+	
+	$("#tbl1").on("click","#chkAll1",function(){
+		   if($(this).is(":checked")){
+		      $("#tbl1 .row1 .chk1").each(function(){
+		         $(this).prop("checked", true);
+		      });
+		   }
+		   else{
+		      $("#tbl1 .row1 .chk1").each(function(){
+		         $(this).prop("checked", false);
+		      });
+		   }
+		});
+	
+	$("#btnNext").on("click", function(){      		
+		if(start+display < total){
+			start=start+display;
+			page = page+1;
+	        getList();
+        }
+	});
+	
+	$("#btnPre").on("click", function(){
+		 if(start > 1){
+			start=start-display;
+			page = page-1;
+	        getList();
+        }	 
+	});
+	
+	$("#btnSearch").on("click", function(){
+		start=1;
+		page = 1;
+		getList();
+	});
+	
+	$("#txtSearch").keydown(function(key){
+		if(key.keyCode==13){
+			start=1;
+			page = 1;
+			getList();
+		
+		}
+	});
+	
+	$("#tbl").on("click",".thumb img",function(){		
+		var url=$(this).attr("url");
+		$("#image").attr("src",url);
+		$("#image").attr("width", "600");
+		
+		$("#darken-background").show();	
+	});
+	
+	$("#darken-background").on("click",function(){
+		$("#darken-background").hide();
+	});
+	
+	
+
+	function getList(){
+
+		var query=$("#txtSearch").val();
+		$.ajax({
+			type:"get",
+			url:"movie.jsp",
+			dataType:"json",
+			data:{"query":query, "display":display, "start":start},
+			success:function(data){
+				
+				total=data.total;
+				$("#total").html(total + "건");
+				
+				
+				var temp = Handlebars.compile($("#temp").html());
+				$("#tbl").html(temp(data));
+				
+			}
+		});
+		$("#pageNo").html(page);
+	}
+	
+	
+</script>
+</html>
